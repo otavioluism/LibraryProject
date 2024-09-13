@@ -1,3 +1,9 @@
+import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+import livros.Author;
+import livros.Book;
 import livros.Library;
 
 import java.time.LocalDate;
@@ -7,34 +13,85 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        int option = 1;
+        Scanner scanner = new Scanner(System.in);
+        Library library = new Library();
+        try {
+
+            while (option != 0){
+                System.out.println("Verifique as opções abaixo: ");
+                System.out.println("0 - Sair do programa");
+                System.out.println("1 - Cadastrar Livro");
+                System.out.println("2 - Verificar todos os livros");
+                System.out.println("3 - Emprestar livro");
+                System.out.println("4 - Deletar livro");
+
+                option = scanner.nextInt(); // Lê uma linha de inteiro do scanner/captando linha do scanner
+
+                switch (option) {
+                    case 0:
+                        System.out.println("Saindo do programa...");
+                        break;
+                    case 1:
+                        System.out.println("...Cadastrando livro...");
+                        addBookInLibrary(scanner, library);
+                        break;
+                    case 2:
+                        getBookList(library);
+                        break;
+                    case 3:
+                        System.out.println("emprestar livro");
+                        getBookHire(scanner, library);
+                        break;
+                    case 4:
+                        System.out.println("deletar livro");
+                        break;
+                    default:
+                        System.out.println("Opção inválida, digite outra opção");
+                }
+                System.out.println(System.lineSeparator());
+            }
 
 
-        Library newBook1 = new Library("Harry Potter", LocalDate.of(2023, 10, 5), 1);
-        Library newBook2 = new Library("Ferrari 1", LocalDate.of(2014, 10, 5), 2);
-        Library newBook3 = new Library("Baby Shark", LocalDate.of(2001, 10, 6), 3);
-        Library newBook4 = new Library("1 Milion Pessoas", LocalDate.of(2023, 10, 7), 4);
-        Library newBook5 = new Library("Passando na sua tela", LocalDate.of(2023, 10, 10), 5);
-        Library newBook6 = new Library("o Inimigo", LocalDate.of(2008, 10, 25), 6);
-        Library newBook7 = new Library("Dekster", LocalDate.of(2023, 10, 9), 7);
-        Library newBook8 = new Library("Pocahontas", LocalDate.of(2006, 10, 19), 8);
+        } catch (InputMismatchException e) {
+            System.out.println("Entrada inválida. Por favor, insira o tipo de dado correto para a entrada.");
+        }finally {
+            scanner.close(); // Fecha o scanner para liberar recursos memoria
+        }
 
+        }
 
-        List<Library> listBooks = new ArrayList<>();
+        public static void addBookInLibrary(Scanner scanner, Library library){
+            scanner.nextLine(); // Solução para limpar o buffer do scanner por conta do nextInt
 
-        listBooks.add(newBook1);
-        listBooks.add(newBook2);
-        listBooks.add(newBook3);
-        listBooks.add(newBook4);
-        listBooks.add(newBook5);
-        listBooks.add(newBook6);
-        listBooks.add(newBook7);
-        listBooks.add(newBook8);
+            System.out.println("Nome do autor:");
+            String name = scanner.nextLine();
 
+            System.out.println("Data de nascimento do autor: (dia/mês/ano)");
+            String dateOfBirthString = scanner.nextLine();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthString, formatter);
 
-        Library.showAllBooksLibrary(listBooks);
-        Library.getBorrowedBook(4, listBooks);
-        Library.showAllBooksLibrary(listBooks);
-        Library.getBorrowedBook(4, listBooks);
+            Author author = new Author(name, dateOfBirth);
 
+            System.out.println("Nome título do livro");
+            String title = scanner.nextLine();
+
+            Book book = new Book(title,author);
+
+            library.addBookInList(book);
+
+        }
+
+        public static void getBookList(Library library){
+            library.getBookInList();
+        }
+
+        public static void getBookHire(Scanner scanner, Library library){
+            scanner.nextLine(); // Solução para limpar o buffer do scanner por conta do nextInt
+            System.out.println("Insira o id do livro: ");
+            String bookId = scanner.nextLine();
+
+            library.setBookHire(bookId);
         }
     }

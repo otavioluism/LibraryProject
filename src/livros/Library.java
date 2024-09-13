@@ -1,43 +1,52 @@
 package livros;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
 
-    private Integer codeBook;
-    private String bookName;
-    private LocalDate dateBorrowed;
-    private Boolean isAvailable = Boolean.TRUE;
+    private List<Book> bookList = new ArrayList<>();
 
-    public Library(String bookName, LocalDate dateBorrowed, Integer code) {
-        this.codeBook = code;
-        this.bookName = bookName;
-        this.dateBorrowed = dateBorrowed;
+
+    public void addBookInList(Book book) {
+        this.bookList.add(book);
+        System.out.println(System.lineSeparator());
+        System.out.println("Livro cadastrado com sucesso...");
     }
 
-    public static void getBorrowedBook(Integer codeBook, List<Library> allBooks){ // Emprestar livro
-
-        for (Library book: allBooks) {
-            if (codeBook.equals(book.codeBook) && Boolean.TRUE.equals(book.isAvailable)){
-                System.out.println("Livro encontrado, podendo ser emprestado!");
-                System.out.println(String.format("Nome do Livro: %s ", book.bookName));
-                book.isAvailable = Boolean.FALSE;
-                System.out.println(System.lineSeparator());
-                break;
+    public void getBookInList() {
+        if (!this.bookList.isEmpty()) {
+            for (Book book : this.bookList) {
+                if (book.getIsAvailable()){
+                    System.out.println("Biblioteca Unique:");
+                    System.out.println("------------------------------------------------------------");
+                    System.out.println(String.format("Id: %-50.50s  |  Title: %-20.20s  |  Author :%s-20.20s  |  Data Emissão: %-10s ",
+                            book.getId(), book.getTitle(), book.getAuthorNameBook(), book.getCreateDate()));
+                } else {
+                    System.out.println("No momento todos os livros emprestados!");
+                }
             }
+        } else {
+            System.out.println("Biblioteca sem livros no momento!");
         }
-
-        System.out.println(System.lineSeparator());
-        // Retorna null se nenhum livro for encontrado
-        System.out.println("Livro não encontrado ou não disponível para empréstimo.");
-
     }
 
-    public static void showAllBooksLibrary(List<Library> allBooks){
-        for (Library book:allBooks) {
-            System.out.println(String.format("%-5d   |  Nome Livro: %-30.30s  |   %-10s", book.codeBook, book.bookName, book.isAvailable ? "Disponível" : "Indisponível"));
+    public void setBookHire(String bookId) {
+        if (!this.bookList.isEmpty()) {
+            for (Book book : this.bookList) {
+                if (bookId.equals(book.getId())){
+                    book.setIsAvailable();
+                    System.out.println(String.format("O livro %s esta sendo emprestado com sucesso!", book.getTitle().toUpperCase()));
+                } else {
+                    System.out.println("Não existe este livro na base!");
+                }
+            }
+        } else {
+            System.out.println("Não existe livros na livraria no momento!");
         }
-        System.out.println(System.lineSeparator());
+
     }
 }
+
+
