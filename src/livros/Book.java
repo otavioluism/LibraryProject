@@ -43,7 +43,7 @@ public class Book {
         return this.dateCreate.toString();
     }
 
-    public void setIsAvailable(){
+    public void setIsUnavailable(){
         this.isAvailable = Boolean.FALSE;
     }
 

@@ -33,19 +33,22 @@ public class Library {
     }
 
     public void setBookHire(String bookId) {
-        if (!this.bookList.isEmpty()) {
-            for (Book book : this.bookList) {
-                if (bookId.equals(book.getId())){
-                    book.setIsAvailable();
-                    System.out.println(String.format("O livro %s esta sendo emprestado com sucesso!", book.getTitle().toUpperCase()));
-                } else {
-                    System.out.println("Não existe este livro na base!");
-                }
+        for (Book book : this.bookList) {
+            if (bookId.equals(book.getId()) && book.getIsAvailable()){
+                book.setIsUnavailable();
+                System.out.println(String.format("O livro %s esta sendo emprestado com sucesso!", book.getTitle().toUpperCase()));
+            } else {
+                System.out.println("Livro não encontrado ou já reservado!");
             }
-        } else {
-            System.out.println("Não existe livros na livraria no momento!");
         }
+    }
 
+    public void deleteBook(String bookId){
+        this.bookList.removeIf(item -> item.getId().equals(bookId));
+    }
+
+    public boolean isEmptyBookInList(){
+        return this.bookList.isEmpty();
     }
 }
 

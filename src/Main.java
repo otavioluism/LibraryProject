@@ -33,21 +33,20 @@ public class Main {
                         System.out.println("Saindo do programa...");
                         break;
                     case 1:
-                        System.out.println("...Cadastrando livro...");
                         addBookInLibrary(scanner, library);
                         break;
                     case 2:
                         getBookList(library);
                         break;
                     case 3:
-                        System.out.println("emprestar livro");
                         getBookHire(scanner, library);
                         break;
                     case 4:
-                        System.out.println("deletar livro");
+                        deleteBookList(scanner, library);
                         break;
                     default:
                         System.out.println("Opção inválida, digite outra opção");
+                        break;
                 }
                 System.out.println(System.lineSeparator());
             }
@@ -62,6 +61,7 @@ public class Main {
         }
 
         public static void addBookInLibrary(Scanner scanner, Library library){
+            System.out.println("...Cadastrar um livro...");
             scanner.nextLine(); // Solução para limpar o buffer do scanner por conta do nextInt
 
             System.out.println("Nome do autor:");
@@ -88,10 +88,29 @@ public class Main {
         }
 
         public static void getBookHire(Scanner scanner, Library library){
-            scanner.nextLine(); // Solução para limpar o buffer do scanner por conta do nextInt
-            System.out.println("Insira o id do livro: ");
-            String bookId = scanner.nextLine();
+            if (!library.isEmptyBookInList()){
+                System.out.println("...Emprestar um livro...");
+                scanner.nextLine(); // Solução para limpar o buffer do scanner por conta do nextInt
+                System.out.println("Insira o id do livro: ");
+                String bookId = scanner.nextLine();
 
-            library.setBookHire(bookId);
+                library.setBookHire(bookId);
+            } else {
+                System.out.println("Sem livros no momento para emprestar!");
+            }
+
+        }
+
+        public static void deleteBookList(Scanner scanner, Library library){
+            if (!library.isEmptyBookInList()) {
+                System.out.println("...Deletar um livro...");
+                scanner.nextLine(); // Solução para limpar o buffer do scanner por conta do nextInt
+                System.out.println("Insira o id do livro: ");
+                String bookId = scanner.nextLine();
+
+                library.deleteBook(bookId);
+            } else {
+                System.out.println("Biblioteca vazia, não temos mais livros!");
+            }
         }
     }
